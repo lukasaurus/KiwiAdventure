@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dovef2i7v51ek"]
+
+[ext_resource type="Script" path="res://objects/goal_flag.gd" id="1_goal"]
+[ext_resource type="PackedScene" path="res://models/flag.glb" id="2_flag"]
+[ext_resource type="PackedScene" path="res://models/PlatformerKit/lock.glb" id="3_lock"]
+[ext_resource type="Texture2D" path="res://sprites/particle.png" id="4_particle"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_goal"]
+height = 2.0
+radius = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.9, 0.35, 1)
+albedo_texture = ExtResource("4_particle")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_spark"]
+material = SubResource("StandardMaterial3D_spark")
+size = Vector2(0.25, 0.25)
+
+[sub_resource type="Curve" id="Curve_spark"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="GoalFlag" type="Area3D"]
+script = ExtResource("1_goal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_goal")
+
+[node name="Flag" parent="." instance=ExtResource("2_flag")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="Lock" parent="." instance=ExtResource("3_lock")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 1.7, 0)
+
+[node name="Sparkles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+emitting = false
+amount = 40
+lifetime = 1.5
+mesh = SubResource("QuadMesh_spark")
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 30.0
+gravity = Vector3(0, 0.5, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.5
+scale_amount_curve = SubResource("Curve_spark")
+
+[node name="Glow" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(1, 0.85, 0.4, 1)
+light_energy = 2.0
+omni_range = 4.0

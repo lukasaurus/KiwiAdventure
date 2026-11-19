@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c525j6a2ayox5"]
+
+[ext_resource type="Script" path="res://objects/hazard.gd" id="1_hazard"]
+[ext_resource type="PackedScene" path="res://models/PlatformerKit/saw.glb" id="2_saw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_saw"]
+height = 0.4
+radius = 0.6
+
+[node name="Saw" type="Node3D"]
+script = ExtResource("1_hazard")
+spin_speed = 360.0
+move_offset = Vector3(3, 0, 0)
+
+[node name="Model" parent="." instance=ExtResource("2_saw")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.3, 0)
+
+[node name="Hitbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.3, 0)
+shape = SubResource("CylinderShape3D_saw")
